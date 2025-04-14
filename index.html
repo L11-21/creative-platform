@@ -1,47 +1,246 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Creative Platform: AR-Enabled</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creative Platform: AR-Enabled</title>
+  <style>
+    /* Global styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      /* Provided background image takes full-page fixed background */
+      background-image: url('https://designerapp.officeapps.live.com/designerapp/Media.ashx/?id=5bd7b62b-25eb-4936-822a-335797db8629.zip&fileToken=1c8bb28c-db1f-4d9a-bfc7-862cfa801e40&dcHint=WestUS2');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: white;
+    }
+    
+    /* Header styling */
+    header {
+      text-align: center;
+      padding: 20px;
+    }
+    
+    h1 {
+      font-family: 'Century', sans-serif;
+      font-size: 4rem; /* a bit larger */
+      background: -webkit-linear-gradient(black, #f8f8f8); /* gradient from black to off-white */
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 20px;
+    }
+    
+    /* Presentation container: occupies half of the visible screen.
+       The iframe bottom is aligned to the container's bottom (center of screen). */
+    .presentation-container {
+      height: 50vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      margin-bottom: 20px;
+    }
+    
+    .presentation-container iframe {
+      width: 60%;
+      height: 100%;
+      border: 2px solid orange;
+    }
+    
+    /* Main content: split between links (left) and interactive portal (right) */
+    main {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 20px;
+      gap: 20px;
+    }
+    
+    /* Left side: Links section */
+    .links-section {
+      width: 50%;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      border-radius: 10px;
+    }
+    
+    .links-section h2 {
+      margin-bottom: 10px;
+      font-size: 1.5rem;
+    }
+    
+    .links-section p {
+      margin-bottom: 20px;
+    }
+    
+    .links-section a {
+      color: #ffcc00;
+      text-decoration: none;
+    }
+    
+    /* Right side: Interactive portal */
+    .interactive-area {
+      width: 45%;
+      background-color: black; /* black background for the portal */
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      min-height: 300px; /* ensure there's some space even if content loads later */
+    }
+    
+    .interactive-area h2 {
+      margin-bottom: 20px;
+      font-size: 1.8rem;
+    }
+    
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    input[type="text"], input[type="submit"] {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      width: 80%;
+    }
+    
+    input[type="submit"] {
+      background-color: orange;
+      color: white;
+      cursor: pointer;
+    }
+    
+    /* Styles for the virtual grid inside the portal */
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 10px;
+      margin-top: 20px;
+    }
+    
+    .grid-cell {
+      background-color: #444;
+      padding: 20px;
+      text-align: center;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .grid-cell:hover {
+      background-color: orange;
+    }
+    
+    footer {
+      text-align: center;
+      margin: 20px 0;
+      padding: 10px;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Welcome to the Creative Platform</h1>
-        <iframe 
-            src="https://1drv.ms/p/c/DA32B2039E0CF359/IQS0OcOC21FQQrcmgmK50TMOATJQi5YblECBYmki_MLxfJs?em=2&amp;wdAr=1.7777777777777777" 
-            width="476px" 
-            height="288px" 
-            frameborder="0">
-            This is an embedded 
-            <a target="_blank" href="https://office.com">Microsoft Office</a> presentation, powered by 
-            <a target="_blank" href="https://office.com/webapps">Office</a>.
-        </iframe>
-    </header>
-    <main>
-        <section>
-            <h2><a href="design.html">Design and Creative Director’s Impact</a></h2>
-            <p>Explore the vital role of the Creative Director in shaping the platform's AR-focused UI and UX design.</p>
-        </section>
-        <section>
-            <h2><a href="ux-ui-developer.html">Front End Development: UX/UI Developer</a></h2>
-            <p>Learn how UX/UI Developers create intuitive interfaces and seamless user experiences for digital platforms.</p>
-        </section>
-        <section>
-            <h2><a href="information-architect.html">Usability: Information Architect</a></h2>
-            <p>Discover how Information Architects organize and structure content to enhance usability and accessibility.</p>
-        </section>
-        <section>
-            <h2><a href="motion-designer.html">Multimedia: Animator/Motion Designer</a></h2>
-            <p>Understand the role of Motion Designers in bringing static visuals to life through animation and motion graphics.</p>
-        </section>
-        <section>
-            <h2><a href="digital-project-manager.html">Project Management: Digital Project Manager</a></h2>
-            <p>Explore how Digital Project Managers lead and execute digital initiatives, ensuring timely and efficient delivery.</p>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2025 Innovative Platform</p>
-    </footer>
+  <header>
+    <h1>Welcome to the Creative Platform</h1>
+    <div class="presentation-container">
+      <iframe 
+        src="https://1drv.ms/p/c/DA32B2039E0CF359/IQS0OcOC21FQQrcmgmK50TMOATJQi5YblECBYmki_MLxfJs?em=2&amp;wdAr=1.7777777777777777" 
+        frameborder="0">
+        This is an embedded 
+        <a target="_blank" href="https://office.com">Microsoft Office</a> presentation, powered by 
+        <a target="_blank" href="https://office.com/webapps">Office</a>.
+      </iframe>
+    </div>
+  </header>
+  <main>
+    <!-- Left: Links section with navigation and descriptions -->
+    <div class="links-section">
+      <h2><a href="design.html">Design and Creative Director’s Impact</a></h2>
+      <p>Explore the vital role of the Creative Director in shaping the platform's AR-focused UI and UX design.</p>
+      
+      <h2><a href="ux-ui-developer.html">Front End Development: UX/UI Developer</a></h2>
+      <p>Learn how UX/UI Developers create intuitive interfaces and seamless user experiences for digital platforms.</p>
+      
+      <h2><a href="information-architect.html">Usability: Information Architect</a></h2>
+      <p>Discover how Information Architects organize and structure content to enhance usability and accessibility.</p>
+      
+      <h2><a href="motion-designer.html">Multimedia: Animator/Motion Designer</a></h2>
+      <p>Understand the role of Motion Designers in bringing static visuals to life through animation and motion graphics.</p>
+      
+      <h2><a href="digital-project-manager.html">Project Management: Digital Project Manager</a></h2>
+      <p>Explore how Digital Project Managers lead and execute digital initiatives, ensuring timely and efficient delivery.</p>
+    </div>
+    
+    <!-- Right: Interactive portal -->
+    <div class="interactive-area" id="interactive-area">
+      <h2>Build Your Imagination Plane</h2>
+      <form id="imagination-form">
+        <label for="plane-name">Plane Name:</label>
+        <input type="text" id="plane-name" name="plane-name" placeholder="e.g., Morning Coffee" required>
+        
+        <label for="plane-type">Plane Type:</label>
+        <input type="text" id="plane-type" name="plane-type" placeholder="e.g., Energize & Analysis" required>
+        
+        <input type="submit" value="Create Plane">
+      </form>
+    </div>
+  </main>
+  <footer>
+    <p>&copy; 2025 Innovative Platform</p>
+  </footer>
+  
+  <script>
+    // JavaScript for the interactive portal.
+    // When 'Create Plane' is clicked, prevent page navigation and replace the portal content with a virtual grid.
+    document.getElementById('imagination-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      // Retrieve the values entered by the user.
+      const planeName = document.getElementById('plane-name').value;
+      const planeType = document.getElementById('plane-type').value;
+      
+      // Reference to the interactive panel
+      const interactiveArea = document.getElementById('interactive-area');
+      
+      // Clear out the current content.
+      interactiveArea.innerHTML = '';
+      
+      // Create a new header for the portal.
+      const portalHeader = document.createElement('h2');
+      portalHeader.textContent = `Virtual Grid: ${planeName} (${planeType})`;
+      interactiveArea.appendChild(portalHeader);
+      
+      // Create a container for the virtual grid.
+      const gridContainer = document.createElement('div');
+      gridContainer.className = 'grid-container';
+      
+      // Example: 9 cells representing aspects of your virtual grid.
+      const cellNames = [
+          'Morning', 'At Desk', 'Coffee',
+          'Lunch', 'Culture', 'Break',
+          'Art Outside', 'Training', 'Networking'
+      ];
+      
+      // Create each grid cell.
+      cellNames.forEach(cellText => {
+          const cell = document.createElement('div');
+          cell.className = 'grid-cell';
+          cell.textContent = cellText;
+          // Optional: Add a click event to toggle cell highlight.
+          cell.addEventListener('click', () => {
+              cell.style.backgroundColor = (cell.style.backgroundColor === 'rgb(255, 165, 0)') ? '#444' : 'orange';
+          });
+          gridContainer.appendChild(cell);
+      });
+      
+      // Insert the grid container into the interactive portal.
+      interactiveArea.appendChild(gridContainer);
+    });
+  </script>
 </body>
 </html>
