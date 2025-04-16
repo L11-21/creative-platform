@@ -87,27 +87,23 @@
       text-decoration: none;
     }
 
-/* Interactive Area Styles */
-.interactive-area {
-  width: 45%;
-  background-color: black;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  min-height: 300px;
-  transition: box-shadow 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out; /* Smooth transitions */
-}
+    /* Interactive Area Styles */
+    .interactive-area {
+      width: 45%;
+      background-color: black;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      min-height: 300px;
+      transition: box-shadow 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out; /* Smooth transitions */
+    }
 
-/* Style for the floating state */
-.interactive-area.floating {
-  /* Remove position: fixed; */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7); /* More prominent shadow */
-  z-index: 1000; /* Ensure it's on top (important if overlapping other content) */
-  width: 50%; /* Slightly larger width */
-  /* You can also adjust the height if needed */
-  /* height: auto; /* Or a specific larger height */ */
-  /* Maintain its position in the normal flow */
-}
+    /* Style for the floating state */
+    .interactive-area.floating {
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7); /* More prominent shadow */
+      z-index: 1000; /* Ensure it's on top (important if overlapping other content) */
+      width: 50%; /* Slightly larger width */
+    }
 
     .interactive-area h2 {
       margin-bottom: 20px;
@@ -133,26 +129,6 @@
       background-color: orange;
       color: white;
       cursor: pointer;
-    }
-
-    .grid-container {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-gap: 10px;
-      margin-top: 20px;
-    }
-
-    .grid-cell {
-      background-color: #444;
-      padding: 20px;
-      text-align: center;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    .grid-cell:hover {
-      background-color: orange;
     }
 
     footer {
@@ -216,7 +192,6 @@
       text-align: left;
     }
 
-    /* Terminal command input styling */
     .terminal-input-form {
       margin-top: 20px;
       display: flex;
@@ -270,19 +245,15 @@
   </footer>
 
   <script>
-    // When the "Build Your Imagination Plane" form is submitted:
+    // JavaScript code for handling the form submission and virtual terminal
     document.getElementById('imagination-form').addEventListener('submit', function(event) {
       event.preventDefault();
 
-      // Retrieve user input
       const planeName = document.getElementById('plane-name').value;
       const planeType = document.getElementById('plane-type').value;
 
-      // We send the data to the backend (if desired) and then update the UI.
-      // For demonstration, we'll simulate a backend response.
-      // (In production, use fetch('/create_plane', { ... }).then(...))
       const simulatedResponse = {
-        activation_message: `<span class="math-inline">\{planeName\} \(</span>{planeType}) activated!`,
+        activation_message: `<span class="math-inline">${planeName}</span> (${planeType}) activated!`,
         qiskit_simulation: "Quantum output: 101",
         dynamic_content: "Dynamic Data: Trending topics in AI & Quantum Computing",
         visualization: "<img src='https://via.placeholder.com/300x200.png?text=Data+Visualization' alt='Visualization'>",
@@ -293,130 +264,118 @@
     });
 
     function loadVirtualTerminal(response) {
-      const interactiveArea = document.getElementById('interactive-area');
-      interactiveArea.innerHTML = '';
-      interactiveArea.classList.add('floating');
+      const interactiveArea = document.getElementById('interactive-area');
+      interactiveArea.innerHTML = '';
+      interactiveArea.classList.add('floating');
 
-      // Create the Virtual Terminal container
-      const terminalContainer = document.createElement('div');
-      terminalContainer.className = 'virtual-terminal';
+      const terminalContainer = document.createElement('div');
+      terminalContainer.className = 'virtual-terminal';
 
-      // Terminal header with label & blinking underscore
-      const terminalHeader = document.createElement('div');
-      terminalHeader.className = 'terminal-header';
-      const terminalTitle = document.createElement('span');
-      terminalTitle.className = 'terminal-title';
-      terminalTitle.textContent = 'VIRTUAL GRID:';
-      const cursor = document.createElement('span');
-      cursor.className = 'cursor';
-      cursor.textContent = '_';
-      terminalHeader.appendChild(terminalTitle);
-      terminalHeader.appendChild(cursor);
-      terminalContainer.appendChild(terminalHeader);
+      const terminalHeader = document.createElement('div');
+      terminalHeader.className = 'terminal-header';
+      terminalHeader.innerHTML = `<span class="terminal-title">VIRTUAL GRID:</span><span class="cursor">_</span>`;
+      terminalContainer.appendChild(terminalHeader);
 
-      // Terminal body
-      const terminalBody = document.createElement('div');
-      terminalBody.className = 'terminal-body';
-      terminalBody.innerHTML = `<p><span class="math-inline">\{response\.activation\_message\}</p\>
-<p\></span>{response.qiskit_simulation}</p>
-                                  <p><span class="math-inline">\{response\.dynamic\_content\}</p\>
-<p\></span>{response.instruction}</p>
-                                  <p>Data Visualization:</p>
-                                  ${response.visualization}`;
+      const terminalBody = document.createElement('div');
+      terminalBody.className = 'terminal-body';
+      terminalBody.innerHTML = `
+        <p><span class="math-inline">${response.activation_message}</span></p>
+        <p>${response.qiskit_simulation}</p>
+        <p>${response.dynamic_content}</p>
+        <p>${response.instruction}</p>
+        <p>Data Visualization:</p>
+        ${response.visualization}
+      `;
 
-      // Append an output container for command interactions
-      const outputContainer = document.createElement('div');
-      outputContainer.id = 'terminal-output';
+      // Append an output container for command interactions
+      const outputContainer = document.createElement('div');
+      outputContainer.id = 'terminal-output';
+      terminalBody.appendChild(outputContainer);
 
-      terminalBody.appendChild(outputContainer);
+      // Create a form for command input
+      const terminalForm = document.createElement('form');
+      terminalForm.className = 'terminal-input-form';
+      const terminalInput = document.createElement('input');
+      terminalInput.type = 'text';
+      terminalInput.id = 'terminal-input';
+      terminalInput.placeholder = 'Enter command...';
+      terminalForm.appendChild(terminalInput);
 
-      // Create a form for command input
-      const terminalForm = document.createElement('form');
-      terminalForm.className = 'terminal-input-form';
-      const terminalInput = document.createElement('input');
-      terminalInput.type = 'text';
-      terminalInput.id = 'terminal-input';
-      terminalInput.placeholder = 'Enter command...';
-      terminalForm.appendChild(terminalInput);
+      // When a command is submitted
+      terminalForm.addEventListener('submit', function(evt) {
+        evt.preventDefault();
+        const command = terminalInput.value.trim();
+        if (command !== '') {
+          // Append the command to the output
+          appendTerminalLine(`> ${command}`);
+          // Simulate a dynamic response (in a real app, you would process this command)
+          simulateNeuralResponse(command);
+          terminalInput.value = '';
+        }
+      });
 
-      // When a command is submitted
-      terminalForm.addEventListener('submit', function(evt) {
-        evt.preventDefault();
-        const command = terminalInput.value.trim();
-        if (command !== '') {
-          // Append the command to the output
-          appendTerminalLine(`> ${command}`);
-          // Simulate a dynamic response (in a real app, you would process this command)
-          simulateNeuralResponse(command);
-          terminalInput.value = '';
-        }
-      });
+      terminalBody.appendChild(terminalForm);
+      terminalContainer.appendChild(terminalBody);
 
-      terminalBody.appendChild(terminalForm);
-      terminalContainer.appendChild(terminalBody);
+      const closeButton = document.createElement('button');
+      closeButton.textContent = 'Close';
+      closeButton.style.position = 'absolute';
+      closeButton.style.top = '10px';
+      closeButton.style.right = '10px';
+      closeButton.addEventListener('click', () => {
+        interactiveArea.classList.remove('floating');
+        interactiveArea.innerHTML = `
+          <h2>Build Your Imagination Plane</h2>
+          <form id="imagination-form">
+            <label for="plane-name">Plane Name:</label>
+            <input type="text" id="plane-name" name="plane_name" placeholder="e.g., Morning Coffee" required>
+            <label for="plane-type">Plane Type:</label>
+            <input type="text" id="plane-type" name="plane_type" placeholder="e.g., Energize & Analysis" required>
+            <input type="submit" value="Create Plane">
+          </form>
+        `;
+        document.getElementById('imagination-form').addEventListener('submit', function(event) {
+          event.preventDefault();
+          const planeName = document.getElementById('plane-name').value;
+          const planeType = document.getElementById('plane-type').value;
+          const simulatedResponse = {
+            activation_message: `<span class="math-inline">${planeName}</span> (${planeType}) activated!`,
+            qiskit_simulation: "Quantum output: 101",
+            dynamic_content: "Dynamic Data: Trending topics in AI & Quantum Computing",
+            visualization: "<img src='https://via.placeholder.com/300x200.png?text=Data+Visualization' alt='Visualization'>",
+            instruction: "Enter commands to interact with the virtual grid..."
+          };
+          loadVirtualTerminal(simulatedResponse);
+        });
+      });
+      terminalContainer.appendChild(closeButton);
 
-      // Append the terminal to the interactive area
-      interactiveArea.appendChild(terminalContainer);
+      interactiveArea.appendChild(terminalContainer);
+    }
 
-      // Optionally, you might want to add a close button
-      const closeButton = document.createElement('button');
-      closeButton.textContent = 'Close';
-      closeButton.style.position = 'absolute';
-      closeButton.style.top = '10px';
-      closeButton.style.right = '10px';
-      closeButton.addEventListener('click', () => {
-        interactiveArea.classList.remove('floating');
-        interactiveArea.innerHTML = `
-          <h2>Build Your Imagination Plane</h2>
-          <form id="imagination-form">
-            <label for="plane-name">Plane Name:</label>
-            <input type="text" id="plane-name" name="plane_name" placeholder="e.g., Morning Coffee" required>
-            <label for="plane-type">Plane Type:</label>
-            <input type="text" id="plane-type" name="plane_type" placeholder="e.g., Energize & Analysis" required>
-            <input type="submit" value="Create Plane">
-          </form>
-        `;
-        // Re-attach the event listener to the newly added form
-        document.getElementById('imagination-form').addEventListener('submit', function(event) {
-          event.preventDefault();
-          const planeName = document.getElementById('plane-name').value;
-          const planeType = document.getElementById('plane-type').value;
-          const simulatedResponse = {
-            activation_message: `<span class="math-inline">\{planeName\} \(</span>{planeType}) activated!`,
-            qiskit_simulation: "Quantum output: 101",
-            dynamic_content: "Dynamic Data: Trending topics in AI & Quantum Computing",
-            visualization: "<img src='https://via.placeholder.com/300x200.png?text=Data+Visualization' alt='Visualization'>",
-            instruction: "Enter commands to interact with the virtual grid..."
-          };
-          loadVirtualTerminal(simulatedResponse);
-        });
-      });
-      terminalContainer.appendChild(closeButton);
-    }
+    // Append a new line to the terminal output
+    function appendTerminalLine(text) {
+      const outputContainer = document.getElementById('terminal-output');
+      const line = document.createElement('p');
+      line.textContent = text;
+      outputContainer.appendChild(line);
+      // Scroll to the bottom to see the latest output.
+      outputContainer.scrollTop = outputContainer.scrollHeight;
+    }
 
-    // Append a new line to the terminal output
-    function appendTerminalLine(text) {
-      const outputContainer = document.getElementById('terminal-output');
-      const line = document.createElement('p');
-      line.textContent = text;
-      outputContainer.appendChild(line);
-      // Scroll to the bottom to see the latest output.
-      outputContainer.scrollTop = outputContainer.scrollHeight;
-    }
-
-    // Simulate a neural network response to a command.
-    function simulateNeuralResponse(command) {
-      // Here we choose a random response.
-      const responses = [
-        `Neural network processing '${command}'...`,
-        `Analyzing '${command}' with quantum algorithms...`,
-        `Command '${command}' integrated into the active neural plane.`,
-        `Processing complete. '${command}' yields creative output.`
-      ];
-      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-      setTimeout(() => {
-        appendTerminalLine(randomResponse);
-      }, 1000);
-    }
-  </script>
+    // Simulate a neural network response to a command
+    function simulateNeuralResponse(command) {
+      const responses = [
+        `Neural network processing '${command}'...`,
+        `Analyzing '${command}' with quantum algorithms...`,
+        `Command '${command}' integrated into the active neural plane.`,
+        `Processing complete. '${command}' yields creative output.`
+      ];
+      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+      setTimeout(() => {
+        appendTerminalLine(randomResponse);
+      }, 1000);
+    }
+  </script>
 </body>
+</html>
