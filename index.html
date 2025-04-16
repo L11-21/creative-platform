@@ -87,28 +87,27 @@
       text-decoration: none;
     }
 
-    /* Interactive Area Styles */
-    .interactive-area {
-      width: 45%;
-      background-color: black;
-      padding: 20px;
-      border-radius: 10px;
-      text-align: center;
-      min-height: 300px;
-      transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; /* For potential animations */
-    }
+/* Interactive Area Styles */
+.interactive-area {
+  width: 45%;
+  background-color: black;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  min-height: 300px;
+  transition: box-shadow 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out; /* Smooth transitions */
+}
 
-    /* Style for the floating state */
-    .interactive-area.floating {
-      position: fixed; /* Make it fixed relative to the viewport */
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%); /* Center it on the screen */
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Add a shadow */
-      z-index: 1000; /* Ensure it's on top of other content */
-      width: 80%; /* Example width when floating */
-      max-width: 600px; /* Example max width */
-    }
+/* Style for the floating state */
+.interactive-area.floating {
+  /* Remove position: fixed; */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7); /* More prominent shadow */
+  z-index: 1000; /* Ensure it's on top (important if overlapping other content) */
+  width: 50%; /* Slightly larger width */
+  /* You can also adjust the height if needed */
+  /* height: auto; /* Or a specific larger height */ */
+  /* Maintain its position in the normal flow */
+}
 
     .interactive-area h2 {
       margin-bottom: 20px;
