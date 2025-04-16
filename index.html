@@ -2,27 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- Ensures responsiveness for mobile devices -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Creative Platform: AR-Enabled</title>
   <style>
     /* Global Styles */
-    body {
-      font-family: Arial, sans-serif;
+    html, body {
+      height: auto; /* Ensure content can expand */
+      min-height: 100%; /* Fallback for short content */
+      width: auto; /* Ensure content can expand */
+      min-width: 100%; /* Fallback for narrow content */
       margin: 0;
       padding: 0;
-      background-image: url('https://designerapp.officeapps.live.com/designerapp/Media.ashx/?id=5bd7b62b-25eb-4936-822a-335797db8629.zip&fileToken=1c8bb28c-db1f-4d9a-bfc7-862cfa801e40&dcHint=WestUS2');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      color: white;
+      background-image: url('https://i.imgur.com/UOcHo2w.png'); /* Replace with your image URL */
+      background-size: cover; /* Display at natural size */
+      background-position: bottom center; /* Start from the bottom center */
+      background-repeat: no-repeat;
+      background-attachment: scroll; /* Make it scroll with the content */
+      color: white; /* Default text color */
+      overflow: auto; /* Enable scrollbars when content/background is larger */
     }
-    
+
     header {
       text-align: center;
       padding: 20px;
+      position: relative;
+      z-index: 1;
+      background-color: rgba(0, 0, 0, 0.7);
     }
-    
+
     h1 {
       font-family: 'Century', sans-serif;
       font-size: 4rem;
@@ -31,50 +38,55 @@
       -webkit-text-fill-color: transparent;
       margin-bottom: 20px;
     }
-    
+
     .presentation-container {
       height: 50vh;
       display: flex;
       justify-content: center;
       align-items: flex-end;
       margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+      background-color: rgba(0, 0, 0, 0.7);
     }
-    
+
     .presentation-container iframe {
       width: 60%;
       height: 100%;
       border: 2px solid orange;
     }
-    
+
     main {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       padding: 20px;
       gap: 20px;
+      position: relative;
+      z-index: 1;
     }
-    
+
     .links-section {
       width: 50%;
       background-color: rgba(0, 0, 0, 0.6);
       padding: 20px;
       border-radius: 10px;
     }
-    
+
     .links-section h2 {
       margin-bottom: 10px;
       font-size: 1.5rem;
     }
-    
+
     .links-section p {
       margin-bottom: 20px;
     }
-    
+
     .links-section a {
       color: #ffcc00;
       text-decoration: none;
     }
-    
+
     /* Interactive Area Styles */
     .interactive-area {
       width: 45%;
@@ -83,22 +95,33 @@
       border-radius: 10px;
       text-align: center;
       min-height: 300px;
-      position: relative;
-      overflow: hidden;
+      transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; /* For potential animations */
     }
-    
+
+    /* Style for the floating state */
+    .interactive-area.floating {
+      position: fixed; /* Make it fixed relative to the viewport */
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); /* Center it on the screen */
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Add a shadow */
+      z-index: 1000; /* Ensure it's on top of other content */
+      width: 80%; /* Example width when floating */
+      max-width: 600px; /* Example max width */
+    }
+
     .interactive-area h2 {
       margin-bottom: 20px;
       font-size: 1.8rem;
     }
-    
+
     form {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 10px;
     }
-    
+
     input[type="text"],
     input[type="submit"] {
       padding: 10px;
@@ -106,20 +129,20 @@
       border-radius: 5px;
       width: 80%;
     }
-    
+
     input[type="submit"] {
       background-color: orange;
       color: white;
       cursor: pointer;
     }
-    
+
     .grid-container {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       grid-gap: 10px;
       margin-top: 20px;
     }
-    
+
     .grid-cell {
       background-color: #444;
       padding: 20px;
@@ -128,18 +151,20 @@
       cursor: pointer;
       transition: background-color 0.3s;
     }
-    
+
     .grid-cell:hover {
       background-color: orange;
     }
-    
+
     footer {
       text-align: center;
       margin: 20px 0;
       padding: 10px;
       background-color: rgba(0, 0, 0, 0.5);
+      position: relative;
+      z-index: 1;
     }
-    
+
     /* Virtual Terminal Styles */
     .virtual-terminal {
       background: linear-gradient(45deg, #001100, #003300, #001100);
@@ -155,14 +180,15 @@
       position: relative;
       overflow: auto;
       height: 100%;
+      z-index: 1;
     }
-    
+
     @keyframes lava {
       0%   { background-position: 0% 50%; }
       50%  { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
-    
+
     .terminal-header {
       position: absolute;
       top: 10px;
@@ -172,31 +198,31 @@
       display: flex;
       align-items: center;
     }
-    
+
     .terminal-title {
       margin-right: 5px;
     }
-    
+
     .cursor {
       animation: blink 1s steps(1, end) infinite;
     }
-    
+
     @keyframes blink {
       50% { opacity: 0; }
     }
-    
+
     .terminal-body {
       margin-top: 40px;
       padding: 10px;
       text-align: left;
     }
-    
+
     /* Terminal command input styling */
     .terminal-input-form {
       margin-top: 20px;
       display: flex;
     }
-    
+
     .terminal-input-form input[type="text"] {
       flex: 1;
       padding: 8px;
@@ -216,7 +242,6 @@
     </div>
   </header>
   <main>
-    <!-- Left: Navigation & Information -->
     <div class="links-section">
       <h2><a href="design.html">Design and Creative Director's Impact</a></h2>
       <p>Explore the vital role of the Creative Director in shaping the platform's AR-focused UI and UX design.</p>
@@ -229,8 +254,7 @@
       <h2><a href="digital-project-manager.html">Project Management: Digital Project Manager</a></h2>
       <p>Explore how Digital Project Managers lead and execute digital initiatives, ensuring timely and efficient delivery.</p>
     </div>
-    
-    <!-- Right: Interactive Area -->
+
     <div class="interactive-area" id="interactive-area">
       <h2>Build Your Imagination Plane</h2>
       <form id="imagination-form">
@@ -245,38 +269,39 @@
   <footer>
     <p>&copy; 2025 Innovative Platform</p>
   </footer>
-  
+
   <script>
     // When the "Build Your Imagination Plane" form is submitted:
     document.getElementById('imagination-form').addEventListener('submit', function(event) {
       event.preventDefault();
-      
+
       // Retrieve user input
       const planeName = document.getElementById('plane-name').value;
       const planeType = document.getElementById('plane-type').value;
-      
+
       // We send the data to the backend (if desired) and then update the UI.
       // For demonstration, we'll simulate a backend response.
       // (In production, use fetch('/create_plane', { ... }).then(...))
       const simulatedResponse = {
-        activation_message: `${planeName} (${planeType}) activated!`,
+        activation_message: `<span class="math-inline">\{planeName\} \(</span>{planeType}) activated!`,
         qiskit_simulation: "Quantum output: 101",
         dynamic_content: "Dynamic Data: Trending topics in AI & Quantum Computing",
         visualization: "<img src='https://via.placeholder.com/300x200.png?text=Data+Visualization' alt='Visualization'>",
         instruction: "Enter commands to interact with the virtual grid..."
       };
-      
+
       loadVirtualTerminal(simulatedResponse);
     });
-    
+
     function loadVirtualTerminal(response) {
       const interactiveArea = document.getElementById('interactive-area');
       interactiveArea.innerHTML = '';
-      
+      interactiveArea.classList.add('floating');
+
       // Create the Virtual Terminal container
       const terminalContainer = document.createElement('div');
       terminalContainer.className = 'virtual-terminal';
-      
+
       // Terminal header with label & blinking underscore
       const terminalHeader = document.createElement('div');
       terminalHeader.className = 'terminal-header';
@@ -289,23 +314,23 @@
       terminalHeader.appendChild(terminalTitle);
       terminalHeader.appendChild(cursor);
       terminalContainer.appendChild(terminalHeader);
-      
+
       // Terminal body
       const terminalBody = document.createElement('div');
       terminalBody.className = 'terminal-body';
-      terminalBody.innerHTML = `<p>${response.activation_message}</p>
-                                <p>${response.qiskit_simulation}</p>
-                                <p>${response.dynamic_content}</p>
-                                <p>${response.instruction}</p>
-                                <p>Data Visualization:</p>
-                                ${response.visualization}`;
-      
+      terminalBody.innerHTML = `<p><span class="math-inline">\{response\.activation\_message\}</p\>
+<p\></span>{response.qiskit_simulation}</p>
+                                  <p><span class="math-inline">\{response\.dynamic\_content\}</p\>
+<p\></span>{response.instruction}</p>
+                                  <p>Data Visualization:</p>
+                                  ${response.visualization}`;
+
       // Append an output container for command interactions
       const outputContainer = document.createElement('div');
       outputContainer.id = 'terminal-output';
-      
+
       terminalBody.appendChild(outputContainer);
-      
+
       // Create a form for command input
       const terminalForm = document.createElement('form');
       terminalForm.className = 'terminal-input-form';
@@ -314,7 +339,7 @@
       terminalInput.id = 'terminal-input';
       terminalInput.placeholder = 'Enter command...';
       terminalForm.appendChild(terminalInput);
-      
+
       // When a command is submitted
       terminalForm.addEventListener('submit', function(evt) {
         evt.preventDefault();
@@ -327,14 +352,49 @@
           terminalInput.value = '';
         }
       });
-      
+
       terminalBody.appendChild(terminalForm);
       terminalContainer.appendChild(terminalBody);
-      
-      // Replace interactive area content with the Virtual Terminal
+
+      // Append the terminal to the interactive area
       interactiveArea.appendChild(terminalContainer);
+
+      // Optionally, you might want to add a close button
+      const closeButton = document.createElement('button');
+      closeButton.textContent = 'Close';
+      closeButton.style.position = 'absolute';
+      closeButton.style.top = '10px';
+      closeButton.style.right = '10px';
+      closeButton.addEventListener('click', () => {
+        interactiveArea.classList.remove('floating');
+        interactiveArea.innerHTML = `
+          <h2>Build Your Imagination Plane</h2>
+          <form id="imagination-form">
+            <label for="plane-name">Plane Name:</label>
+            <input type="text" id="plane-name" name="plane_name" placeholder="e.g., Morning Coffee" required>
+            <label for="plane-type">Plane Type:</label>
+            <input type="text" id="plane-type" name="plane_type" placeholder="e.g., Energize & Analysis" required>
+            <input type="submit" value="Create Plane">
+          </form>
+        `;
+        // Re-attach the event listener to the newly added form
+        document.getElementById('imagination-form').addEventListener('submit', function(event) {
+          event.preventDefault();
+          const planeName = document.getElementById('plane-name').value;
+          const planeType = document.getElementById('plane-type').value;
+          const simulatedResponse = {
+            activation_message: `<span class="math-inline">\{planeName\} \(</span>{planeType}) activated!`,
+            qiskit_simulation: "Quantum output: 101",
+            dynamic_content: "Dynamic Data: Trending topics in AI & Quantum Computing",
+            visualization: "<img src='https://via.placeholder.com/300x200.png?text=Data+Visualization' alt='Visualization'>",
+            instruction: "Enter commands to interact with the virtual grid..."
+          };
+          loadVirtualTerminal(simulatedResponse);
+        });
+      });
+      terminalContainer.appendChild(closeButton);
     }
-    
+
     // Append a new line to the terminal output
     function appendTerminalLine(text) {
       const outputContainer = document.getElementById('terminal-output');
@@ -344,7 +404,7 @@
       // Scroll to the bottom to see the latest output.
       outputContainer.scrollTop = outputContainer.scrollHeight;
     }
-    
+
     // Simulate a neural network response to a command.
     function simulateNeuralResponse(command) {
       // Here we choose a random response.
@@ -361,4 +421,3 @@
     }
   </script>
 </body>
-</html>
