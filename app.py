@@ -42,5 +42,9 @@ def simulate_neural_network_with_qiskit(plane_name, plane_type):
     }
     return neural_output
 
+@app.route('/health')
+def health():
+    return 'OK', 200
+
 if __name__ == '__main__':
     app.run(debug=True)
