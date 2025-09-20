@@ -1,36 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Creative Platform: AR-Enabled</title>
   <style>
-    html, body { min-height: 100%; width: 100%; margin: 0; padding: 0; background-image: url('https://i.imgur.com/UOcHo2w.png'); background-size: cover; background-position: bottom center; color: white; overflow: auto; }
-    header { text-align: center; padding: 20px; position: relative; z-index: 1; background-color: rgba(0, 0, 0, 0.7); }
-    h1 { font-family: 'Century', sans-serif; font-size: 2.5rem; background: -webkit-linear-gradient(black, #f8f8f8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 20px; }
-    .presentation-container { height: 30vh; display: flex; justify-content: center; align-items: flex-end; margin-bottom: 20px; position: relative; z-index: 1; background-color: rgba(0, 0, 0, 0.7); }
-    .presentation-container iframe { width: 80%; height: 100%; border: 2px solid orange; }
-    main { display: flex; justify-content: space-between; align-items: flex-start; padding: 20px; gap: 20px; position: relative; z-index: 1; }
-    .links-section { width: 50%; background-color: rgba(0, 0, 0, 0.6); padding: 20px; border-radius: 10px; }
-    .links-section h2 { margin-bottom: 10px; font-size: 1.2rem; }
-    .links-section p { margin-bottom: 20px; }
-    .links-section a { color: #ffcc00; text-decoration: none; }
-    .interactive-area { width: 45%; background-color: black; padding: 20px; border-radius: 10px; text-align: center; min-height: 300px; transition: box-shadow 0.3s, width 0.3s, height 0.3s; }
-    .interactive-area.floating { box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7); z-index: 1000; width: 50%; }
-    .interactive-area h2 { margin-bottom: 20px; font-size: 1.5rem; }
-    form { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-    input[type="text"], input[type="submit"] { padding: 10px; border: none; border-radius: 5px; width: 80%; }
-    input[type="submit"] { background-color: orange; color: white; cursor: pointer; }
-    footer { text-align: center; margin: 20px 0; padding: 10px; background-color: rgba(0, 0, 0, 0.5); position: relative; z-index: 1; }
-    .virtual-terminal { background: linear-gradient(45deg, #001100, #003300, #001100); background-size: 400% 400%; animation: lava 10s ease infinite; border: 2px solid #0f0; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 255, 0, 0.75); color: #0f0; font-family: 'Courier New', Courier, monospace; font-size: 1.1rem; padding: 20px; position: relative; overflow: auto; min-height: 380px; z-index: 1; }
-    @keyframes lava { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-    .terminal-header { position: absolute; top: 10px; left: 10px; font-size: 1.2rem; font-weight: bold; display: flex; align-items: center; }
-    .terminal-title { margin-right: 5px; }
-    .cursor { animation: blink 1s steps(1, end) infinite; }
-    @keyframes blink { 50% { opacity: 0; } }
-    .terminal-body { margin-top: 40px; padding: 10px; text-align: left; }
-    .terminal-input-form { margin-top: 20px; display: flex; }
-    .terminal-input-form input[type="text"] { flex: 1; padding: 8px; background-color: #000; color: #0f0; border: 1px solid #0f0; font-family: 'Courier New', Courier, monospace; font-size: 1.1rem; }
+    html, body {
+      min-height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      background-image: url('https://i.imgur.com/UOcHo2w.png');
+      background-size: cover;
+      background-position: bottom center;
+      color: white;
+      overflow: auto;
+    }
+    header {
+      text-align: center;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+    h1 {
+      font-family: 'Century', sans-serif;
+      font-size: 2.5rem;
+      background: -webkit-linear-gradient(black, #f8f8f8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .presentation-container {
+      height: 30vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      margin-bottom: 20px;
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+    .presentation-container iframe {
+      width: 80%;
+      height: 100%;
+      border: 2px solid orange;
+    }
+    main {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      padding: 20px;
+      gap: 20px;
+    }
+    .links-section, .interactive-area {
+      flex: 1 1 45%;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      border-radius: 10px;
+    }
+    .interactive-area.floating {
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    input[type="text"], input[type="submit"] {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      width: 100%;
+    }
+    input[type="submit"] {
+      background-color: orange;
+      color: white;
+      cursor: pointer;
+    }
+    .virtual-terminal {
+      background: linear-gradient(45deg, #001100, #003300, #001100);
+      animation: lava 10s ease infinite;
+      border: 2px solid #0f0;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 255, 0, 0.75);
+      color: #0f0;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 1.1rem;
+      padding: 20px;
+      position: relative;
+      overflow: auto;
+      min-height: 380px;
+    }
+    @keyframes lava {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .terminal-header {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+    }
+    .cursor {
+      animation: blink 1s steps(1, end) infinite;
+    }
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+    .terminal-body {
+      margin-top: 40px;
+      padding: 10px;
+      text-align: left;
+    }
+    .terminal-input-form {
+      margin-top: 20px;
+      display: flex;
+    }
+    .terminal-input-form input[type="text"] {
+      flex: 1;
+      padding: 8px;
+      background-color: #000;
+      color: #0f0;
+      border: 1px solid #0f0;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 1.1rem;
+    }
+    @media (max-width: 768px) {
+      main {
+        flex-direction: column;
+      }
+      .links-section, .interactive-area {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -68,12 +171,13 @@
     <p>&copy; 2025 Innovative Platform</p>
   </footer>
   <script>
-    // Handle imagination form submission
+    let commandHistory = [];
+    let historyIndex = -1;
+
     document.getElementById('imagination-form').addEventListener('submit', async function(event) {
       event.preventDefault();
       const planeName = document.getElementById('plane-name').value;
       const planeType = document.getElementById('plane-type').value;
-      // POST to backend
       const response = await fetch('/create_plane', {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -99,7 +203,7 @@
       const terminalBody = document.createElement('div');
       terminalBody.className = 'terminal-body';
       terminalBody.innerHTML = `
-        <p><span class="math-inline">${response.activation_message}</span></p>
+        <p>${response.activation_message}</p>
         <p>${response.qiskit_simulation}</p>
         <p>${response.dynamic_content}</p>
         <p>${response.instruction}</p>
@@ -107,34 +211,61 @@
         ${response.visualization}
       `;
 
-      // Output container for command interactions
       const outputContainer = document.createElement('div');
       outputContainer.id = 'terminal-output';
       terminalBody.appendChild(outputContainer);
 
-      // Command input form
       const terminalForm = document.createElement('form');
       terminalForm.className = 'terminal-input-form';
+
       const terminalInput = document.createElement('input');
       terminalInput.type = 'text';
       terminalInput.id = 'terminal-input';
       terminalInput.placeholder = 'Enter command...';
+
       terminalForm.appendChild(terminalInput);
 
-      // On command submit
+      // Command history support (optional)
+      terminalInput.addEventListener('keydown', function(e) {
+        if (e.key === "ArrowUp") {
+          if (commandHistory.length && historyIndex > 0) {
+            historyIndex--;
+            terminalInput.value = commandHistory[historyIndex];
+            e.preventDefault();
+          }
+        } else if (e.key === "ArrowDown") {
+          if (commandHistory.length && historyIndex < commandHistory.length - 1) {
+            historyIndex++;
+            terminalInput.value = commandHistory[historyIndex];
+            e.preventDefault();
+          } else if (historyIndex === commandHistory.length - 1) {
+            terminalInput.value = '';
+            historyIndex++;
+            e.preventDefault();
+          }
+        }
+      });
+
       terminalForm.addEventListener('submit', async function(evt) {
         evt.preventDefault();
         const command = terminalInput.value.trim();
         if (command !== '') {
           appendTerminalLine(`> ${command}`);
+          // Add to history
+          commandHistory.push(command);
+          historyIndex = commandHistory.length;
           // Call backend for Qiskit result
-          const res = await fetch('/execute_command', {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({ command })
-          });
-          const result = await res.json();
-          appendTerminalLine(result.output);
+          try {
+            const res = await fetch('/execute_command', {
+              method: "POST",
+              headers: {"Content-Type": "application/json"},
+              body: JSON.stringify({ command })
+            });
+            const result = await res.json();
+            appendTerminalLine(result.output);
+          } catch (err) {
+            appendTerminalLine('[ERROR] Could not execute command.');
+          }
           terminalInput.value = '';
         }
       });
@@ -160,6 +291,9 @@
             <input type="submit" value="Create Plane">
           </form>
         `;
+        // Reset history
+        commandHistory = [];
+        historyIndex = -1;
         document.getElementById('imagination-form').addEventListener('submit', async function(event) {
           event.preventDefault();
           const planeName = document.getElementById('plane-name').value;
@@ -178,7 +312,6 @@
       interactiveArea.appendChild(terminalContainer);
     }
 
-    // Append a new line to the terminal output
     function appendTerminalLine(text) {
       const outputContainer = document.getElementById('terminal-output');
       const line = document.createElement('p');
