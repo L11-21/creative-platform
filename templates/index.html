@@ -7,24 +7,23 @@
   <style>
     /* Global Styles */
     html, body {
-      height: auto;
-      min-height: 100%;
-      width: auto;
-      min-width: 100%;
+      height: 100%;
+      width: 100%;
       margin: 0;
       padding: 0;
       background-image: url('https://i.imgur.com/UOcHo2w.png');
       background-size: cover;
-      background-position: bottom center;
+      background-position: center;
       background-repeat: no-repeat;
-      background-attachment: scroll;
+      background-attachment: fixed;
       color: white;
+      font-family: 'Segoe UI', Arial, sans-serif;
       overflow: auto;
     }
 
     header {
       text-align: center;
-      padding: 20px;
+      padding: 40px 20px 20px;
       position: relative;
       z-index: 1;
       background-color: rgba(0, 0, 0, 0.7);
@@ -37,6 +36,8 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin-bottom: 20px;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .presentation-container {
@@ -51,9 +52,10 @@
     }
 
     .presentation-container iframe {
-      width: 60%;
+      width: 80%;
       height: 100%;
       border: 2px solid orange;
+      box-shadow: 0 0 20px rgba(255, 165, 0, 0.5);
     }
 
     main {
@@ -71,6 +73,7 @@
       background-color: rgba(0, 0, 0, 0.6);
       padding: 20px;
       border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     }
 
     .links-section h2 {
@@ -85,6 +88,11 @@
     .links-section a {
       color: #ffcc00;
       text-decoration: none;
+      transition: color 0.3s ease-in-out;
+    }
+
+    .links-section a:hover {
+      color: orange;
     }
 
     /* Interactive Area Styles */
@@ -95,13 +103,21 @@
       border-radius: 10px;
       text-align: center;
       min-height: 300px;
-      transition: box-shadow 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out;
+      transition: box-shadow 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out, transform 0.3s ease-in-out;
+      position: relative;
     }
 
     .interactive-area.floating {
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
       z-index: 1000;
-      width: 50%;
+      width: 90%;
+      max-width: 900px;
+      margin: auto;
+      height: 70vh;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 
     .interactive-area h2 {
@@ -118,16 +134,24 @@
 
     input[type="text"],
     input[type="submit"] {
-      padding: 10px;
-      border: none;
+      padding: 12px;
+      border: 1px solid #ccc;
       border-radius: 5px;
       width: 80%;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
     }
 
     input[type="submit"] {
       background-color: orange;
       color: white;
       cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease-in-out;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #e69500;
     }
 
     footer {
@@ -145,32 +169,29 @@
       background-size: 400% 400%;
       animation: lava 10s ease infinite;
       border: 2px solid #0f0;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0, 255, 0, 0.75);
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 255, 0, 0.9);
       color: #0f0;
       font-family: 'Courier New', Courier, monospace;
       font-size: 1.1rem;
       padding: 20px;
-      position: relative;
-      overflow: auto;
       height: 100%;
-      z-index: 1;
+      display: flex;
+      flex-direction: column;
     }
 
     @keyframes lava {
-      0%   { background-position: 0% 50%; }
-      50%  { background-position: 100% 50%; }
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
 
     .terminal-header {
-      position: absolute;
-      top: 10px;
-      left: 10px;
       font-size: 1.2rem;
       font-weight: bold;
       display: flex;
       align-items: center;
+      margin-bottom: 15px;
     }
 
     .terminal-title {
@@ -186,14 +207,23 @@
     }
 
     .terminal-body {
-      margin-top: 40px;
-      padding: 10px;
+      flex: 1;
+      padding-right: 10px;
       text-align: left;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .terminal-body p {
+      margin: 0;
     }
 
     .terminal-input-form {
       margin-top: 20px;
       display: flex;
+      width: 100%;
     }
 
     .terminal-input-form input[type="text"] {
@@ -204,6 +234,25 @@
       border: 1px solid #0f0;
       font-family: 'Courier New', Courier, monospace;
       font-size: 1.1rem;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #ff0000;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 1001;
+      transition: background-color 0.3s ease;
+    }
+
+    .close-button:hover {
+      background-color: #cc0000;
     }
   </style>
 </head>
@@ -246,15 +295,16 @@
   </footer>
 
   <script>
-    // Handle "Build Your Imagination Plane" form submission
-    document.getElementById('imagination-form').addEventListener('submit', function(event) {
-      event.preventDefault();
+    const interactiveArea = document.getElementById('interactive-area');
+    const imaginationForm = document.getElementById('imagination-form');
 
+    imaginationForm.addEventListener('submit', function(event) {
+      event.preventDefault();
       const planeName = document.getElementById('plane-name').value;
       const planeType = document.getElementById('plane-type').value;
 
       const simulatedResponse = {
-        activation_message: `<span class="math-inline">${planeName}</span> (${planeType}) activated!`,
+        activation_message: `${planeName} (${planeType}) activated!`,
         qiskit_simulation: "Quantum output: 101",
         dynamic_content: "Dynamic Data: Trending topics in AI & Quantum Computing",
         visualization: "<img src='https://i.imgur.com/qvodtvv.png' alt='Visualization'>",
@@ -265,9 +315,15 @@
     });
 
     function loadVirtualTerminal(response) {
-      const interactiveArea = document.getElementById('interactive-area');
       interactiveArea.innerHTML = '';
       interactiveArea.classList.add('floating');
+
+      const closeButton = document.createElement('button');
+      closeButton.className = 'close-button';
+      closeButton.textContent = 'Close';
+      closeButton.addEventListener('click', () => {
+        resetInteractiveArea();
+      });
 
       const terminalContainer = document.createElement('div');
       terminalContainer.className = 'virtual-terminal';
@@ -279,8 +335,10 @@
 
       const terminalBody = document.createElement('div');
       terminalBody.className = 'terminal-body';
+
+      // Initial lines
       terminalBody.innerHTML = `
-        <p><span class="math-inline">${response.activation_message}</span></p>
+        <p>${response.activation_message}</p>
         <p>${response.qiskit_simulation}</p>
         <p>${response.dynamic_content}</p>
         <p>${response.instruction}</p>
@@ -288,12 +346,6 @@
         ${response.visualization}
       `;
 
-      // Append an output container for command interactions
-      const outputContainer = document.createElement('div');
-      outputContainer.id = 'terminal-output';
-      terminalBody.appendChild(outputContainer);
-
-      // Create a form for command input
       const terminalForm = document.createElement('form');
       terminalForm.className = 'terminal-input-form';
       const terminalInput = document.createElement('input');
@@ -302,74 +354,55 @@
       terminalInput.placeholder = 'Enter command...';
       terminalForm.appendChild(terminalInput);
 
-      // When a command is submitted
       terminalForm.addEventListener('submit', function(evt) {
         evt.preventDefault();
         const command = terminalInput.value.trim();
         if (command !== '') {
-          appendTerminalLine(`> ${command}`);
-          simulateNeuralResponse(command);
+          appendTerminalLine(`> ${command}`, terminalBody);
+          simulateNeuralResponse(command, terminalBody);
           terminalInput.value = '';
         }
       });
 
-      terminalBody.appendChild(terminalForm);
       terminalContainer.appendChild(terminalBody);
-
-      const closeButton = document.createElement('button');
-      closeButton.textContent = 'Close';
-      closeButton.style.position = 'absolute';
-      closeButton.style.top = '10px';
-      closeButton.style.right = '10px';
-      closeButton.addEventListener('click', () => {
-        interactiveArea.classList.remove('floating');
-        interactiveArea.innerHTML = `
-          <h2>Build Your Imagination Plane</h2>
-          <form id="imagination-form">
-            <label for="plane-name">Plane Name:</label>
-            <input type="text" id="plane-name" name="plane_name" placeholder="e.g., Morning Coffee" required>
-            <label for="plane-type">Plane Type:</label>
-            <input type="text" id="plane-type" name="plane_type" placeholder="e.g., Energize & Analysis" required>
-            <input type="submit" value="Create Plane">
-          </form>
-        `;
-        document.getElementById('imagination-form').addEventListener('submit', function(event) {
-          event.preventDefault();
-          const planeName = document.getElementById('plane-name').value;
-          const planeType = document.getElementById('plane-type').value;
-          const simulatedResponse = {
-            activation_message: `<span class="math-inline">${planeName}</span> (${planeType}) activated!`,
-            qiskit_simulation: "Quantum output: 101",
-            dynamic_content: "Dynamic Data: Trending topics in AI & Quantum Computing",
-            visualization: "<img src='https://i.imgur.com/qvodtvv.png' alt='Visualization'>",
-            instruction: "Enter commands to interact with the virtual grid..."
-          };
-          loadVirtualTerminal(simulatedResponse);
-        });
-      });
-      terminalContainer.appendChild(closeButton);
-
+      terminalContainer.appendChild(terminalForm);
+      
+      interactiveArea.appendChild(closeButton);
       interactiveArea.appendChild(terminalContainer);
     }
 
-    function appendTerminalLine(text) {
-      const outputContainer = document.getElementById('terminal-output');
-      const line = document.createElement('p');
-      line.textContent = text;
-      outputContainer.appendChild(line);
-      outputContainer.scrollTop = outputContainer.scrollHeight;
+    function resetInteractiveArea() {
+      interactiveArea.innerHTML = `
+        <h2>Build Your Imagination Plane</h2>
+        <form id="imagination-form">
+          <label for="plane-name">Plane Name:</label>
+          <input type="text" id="plane-name" name="plane_name" placeholder="e.g., Morning Coffee" required>
+          <label for="plane-type">Plane Type:</label>
+          <input type="text" id="plane-type" name="plane_type" placeholder="e.g., Energize & Analysis" required>
+          <input type="submit" value="Create Plane">
+        </form>
+      `;
+      interactiveArea.classList.remove('floating');
     }
 
-    function simulateNeuralResponse(command) {
+    function appendTerminalLine(text, container) {
+      const line = document.createElement('p');
+      line.textContent = text;
+      container.appendChild(line);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function simulateNeuralResponse(command, container) {
       const responses = [
-        `Neural network processing '${command}'...`,
-        `Analyzing '${command}' with quantum algorithms...`,
-        `Command '${command}' integrated into the active neural plane.`,
-        `Processing complete. '${command}' yields creative output.`
+        `Processing neural query for '${command}'...`,
+        `Quantum computation initiated for '${command}'.`,
+        `Command recognized: '${command}'. Generating creative output.`,
+        `Accessing AR asset library. Search query: '${command}'.`,
+        `Analyzing data streams. Found '${command}' trends.`
       ];
       const randomResponse = responses[Math.floor(Math.random() * responses.length)];
       setTimeout(() => {
-        appendTerminalLine(randomResponse);
+        appendTerminalLine(randomResponse, container);
       }, 1000);
     }
   </script>
