@@ -13,7 +13,14 @@ def create_plane():
     data = request.json
     plane_name = data.get('plane_name', 'Default Plane')
     plane_type = data.get('plane_type', 'Default Type')
-    return jsonify({"activation_message": f"{plane_name} ({plane_type}) activated!"})
+
+    return jsonify({
+        "activation_message": f"{plane_name} ({plane_type}) activated!",
+        "qiskit_simulation": "Quantum output: 101",
+        "dynamic_content": "Dynamic Data: Trending topics in AI & Quantum Computing",
+        "visualization": "<img src='https://i.imgur.com/qvodtvv.png' alt='Visualization'>",
+        "instruction": "Enter commands to interact with the virtual grid..."
+    })
 
 @app.route('/health')
 def health():
