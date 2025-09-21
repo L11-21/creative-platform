@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Creative Platform: AR-Enabled</title>
+  <style>
+    html, body {
+      min-height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      background-image: url('https://i.imgur.com/UOcHo2w.png');
+      background-size: cover;
+      background-position: bottom center;
+      color: white;
+      overflow: auto;
+    }
+    header {
+      text-align: center;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+    h1 {
+      font-family: 'Century', sans-serif;
+      font-size: 2.5rem;
+      background: -webkit-linear-gradient(black, #f8f8f8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    .interactive-area {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 40px;
+      width: 100%;
+      max-width: 500px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    input[type="text"], input[type="submit"] {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      width: 100%;
+    }
+    input[type="submit"] {
+      background-color: orange;
+      color: white;
+      cursor: pointer;
+    }
+    #output {
+      margin-top: 20px;
+      color: #0f0;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 1.2rem;
+      min-height: 30px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Welcome to the Creative Platform</h1>
+  </header>
+  <main>
+    <div class="interactive-area">
+      <h2>Build Your Imagination Plane</h2>
+      <form id="imagination-form">
+        <label for="plane-name">Plane Name:</label>
+        <input type="text" id="plane-name" name="plane_name" placeholder="e.g., Morning Coffee" required>
+        <label for="plane-type">Plane Type:</label>
+        <input type="text" id="plane-type" name="plane_type" placeholder="e.g., Energize & Analysis" required>
+        <input type="submit" value="Create Plane">
+      </form>
+      <div id="output"></div>
+    </div>
+  </main>
+  <script>
+    document.getElementById('imagination-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      fetch('/create_plane', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          plane_name: document.getElementById('plane-name').value,
+          plane_type: document.getElementById('plane-type').value
+        })
+      })
+      .then(r => r.json())
+      .then(data => { document.getElementById('output').innerText = data.activation_message; });
+    });
+  </script>
+</body>
+</html>
