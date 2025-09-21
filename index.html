@@ -174,19 +174,28 @@
     let commandHistory = [];
     let historyIndex = -1;
 
-    document.getElementById('imagination-form').addEventListener('submit', async function(event) {
+    // Imagination Plane Form Submission Handler (Live Backend)
+    document.getElementById('imagination-form').addEventListener('submit', function(event) {
       event.preventDefault();
       const planeName = document.getElementById('plane-name').value;
       const planeType = document.getElementById('plane-type').value;
-      const response = await fetch('/create_plane', {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ plane_name: planeName, plane_type: planeType })
+
+      fetch('/create_plane', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          plane_name: planeName,
+          plane_type: planeType
+        })
+      })
+      .then(response => response.json())
+      .then(data => loadVirtualTerminal(data))
+      .catch(error => {
+        console.error('Error creating plane:', error);
       });
-      const data = await response.json();
-      loadVirtualTerminal(data);
     });
 
+    // Virtual Terminal Window Loader (Live Backend for prompts)
     function loadVirtualTerminal(response) {
       const interactiveArea = document.getElementById('interactive-area');
       interactiveArea.innerHTML = '';
@@ -246,7 +255,8 @@
         }
       });
 
-      terminalForm.addEventListener('submit', async function(evt) {
+      // Real backend call for prompt/command input
+      terminalForm.addEventListener('submit', function(evt) {
         evt.preventDefault();
         const command = terminalInput.value.trim();
         if (command !== '') {
@@ -254,18 +264,24 @@
           // Add to history
           commandHistory.push(command);
           historyIndex = commandHistory.length;
-          // Call backend for Qiskit result
-          try {
-            const res = await fetch('/execute_command', {
-              method: "POST",
-              headers: {"Content-Type": "application/json"},
-              body: JSON.stringify({ command })
-            });
-            const result = await res.json();
-            appendTerminalLine(result.output);
-          } catch (err) {
-            appendTerminalLine('[ERROR] Could not execute command.');
-          }
+
+          fetch('/execute_command', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ command: command })
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.output) {
+              appendTerminalLine(data.output);
+            } else {
+              appendTerminalLine('[No response from quantum engine]');
+            }
+          })
+          .catch(error => {
+            appendTerminalLine(`[Error]: ${error.message}`);
+          });
+
           terminalInput.value = '';
         }
       });
@@ -294,17 +310,25 @@
         // Reset history
         commandHistory = [];
         historyIndex = -1;
-        document.getElementById('imagination-form').addEventListener('submit', async function(event) {
+
+        document.getElementById('imagination-form').addEventListener('submit', function(event) {
           event.preventDefault();
           const planeName = document.getElementById('plane-name').value;
           const planeType = document.getElementById('plane-type').value;
-          const response = await fetch('/create_plane', {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({ plane_name: planeName, plane_type: planeType })
+
+          fetch('/create_plane', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              plane_name: planeName,
+              plane_type: planeType
+            })
+          })
+          .then(response => response.json())
+          .then(data => loadVirtualTerminal(data))
+          .catch(error => {
+            console.error('Error creating plane:', error);
           });
-          const data = await response.json();
-          loadVirtualTerminal(data);
         });
       });
       terminalContainer.appendChild(closeButton);
