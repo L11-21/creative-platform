@@ -21,11 +21,18 @@
       overflow: auto;
     }
 
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
     header {
       text-align: center;
       padding: 40px 20px 20px;
-      position: relative;
-      z-index: 1;
+      width: 100%;
       background-color: rgba(0, 0, 0, 0.7);
     }
 
@@ -40,73 +47,30 @@
       -webkit-text-fill-color: transparent;
     }
 
-    .presentation-container {
-      height: 50vh;
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      margin-bottom: 20px;
-      position: relative;
-      z-index: 1;
-      background-color: rgba(0, 0, 0, 0.7);
-    }
-
-    .presentation-container iframe {
-      width: 80%;
-      height: 100%;
-      border: 2px solid orange;
-      box-shadow: 0 0 20px rgba(255, 165, 0, 0.5);
-    }
-
     main {
       display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      padding: 20px;
+      flex-direction: column;
+      align-items: center;
       gap: 20px;
+      width: 100%;
+      max-width: 800px; /* Constrain main container width for better centering */
+      padding: 20px;
       position: relative;
       z-index: 1;
-    }
-
-    .links-section {
-      width: 50%;
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    }
-
-    .links-section h2 {
-      margin-bottom: 10px;
-      font-size: 1.5rem;
-    }
-
-    .links-section p {
-      margin-bottom: 20px;
-    }
-
-    .links-section a {
-      color: #ffcc00;
-      text-decoration: none;
-      transition: color 0.3s ease-in-out;
-    }
-
-    .links-section a:hover {
-      color: orange;
     }
 
     /* Interactive Area Styles */
     .interactive-area {
-      width: 45%;
+      width: 100%;
       background-color: black;
       padding: 20px;
       border-radius: 10px;
       text-align: center;
-      min-height: 300px;
+      min-height: 250px;
       transition: box-shadow 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out, transform 0.3s ease-in-out;
       position: relative;
     }
-
+    
     .interactive-area.floating {
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
       z-index: 1000;
@@ -165,6 +129,7 @@
 
     /* Virtual Terminal Styles */
     .virtual-terminal {
+      width: 100%;
       background: linear-gradient(45deg, #001100, #003300, #001100);
       background-size: 400% 400%;
       animation: lava 10s ease infinite;
@@ -175,9 +140,11 @@
       font-family: 'Courier New', Courier, monospace;
       font-size: 1.1rem;
       padding: 20px;
-      height: 100%;
+      height: auto;
+      min-height: 300px;
       display: flex;
       flex-direction: column;
+      margin-top: 20px;
     }
 
     @keyframes lava {
@@ -259,26 +226,8 @@
 <body>
   <header>
     <h1>Welcome to the Creative Platform</h1>
-    <div class="presentation-container">
-      <iframe src="https://1drv.ms/p/c/DA32B2039E0CF359/IQS0OcOC21FQQrcmgmK50TMOATJQi5YblECBYmki_MLxfJs?em=2&amp;wdAr=1.7777777777777777" frameborder="0"></iframe>
-    </div>
   </header>
   <main>
-    <div class="links-section">
-      <h2><a href="design.html">Design and Creative Director's Impact</a></h2>
-      <p>Explore the vital role of the Creative Director in shaping the platform's AR-focused UI and UX design.</p>
-      <h2><a href="ux-ui-developer.html">Front End Development: UX/UI Developer</a></h2>
-      <p>Learn how UX/UI Developers create intuitive interfaces and seamless user experiences for digital platforms.</p>
-      <h2><a href="information-architect.html">Usability: Information Architect</a></h2>
-      <p>Discover how Information Architects organize and structure content to enhance usability and accessibility.</p>
-      <h2><a href="motion-designer.html">Multimedia: Animator/Motion Designer</a></h2>
-      <p>Understand the role of Motion Designers in bringing static visuals to life through animation and motion graphics.</p>
-      <h2><a href="digital-project-manager.html">Project Management: Digital Project Manager</a></h2>
-      <p>Explore how Digital Project Managers lead and execute digital initiatives, ensuring timely and efficient delivery.</p>
-      <h2><a href="digital-asset-manager.html">Content: Digital Asset Manager</a></h2>
-      <p>Discover how the Digital Asset Manager organizes, manages, and distributes AR digital assets effectively.</p>
-    </div>
-
     <div class="interactive-area" id="interactive-area">
       <h2>Build Your Imagination Plane</h2>
       <form id="imagination-form">
@@ -289,6 +238,7 @@
         <input type="submit" value="Create Plane">
       </form>
     </div>
+    <div id="terminal-container" style="display: none;"></div>
   </main>
   <footer>
     <p>&copy; 2025 Innovative Platform</p>
@@ -297,6 +247,7 @@
   <script>
     const interactiveArea = document.getElementById('interactive-area');
     const imaginationForm = document.getElementById('imagination-form');
+    const terminalContainer = document.getElementById('terminal-container');
 
     imaginationForm.addEventListener('submit', function(event) {
       event.preventDefault();
@@ -315,8 +266,8 @@
     });
 
     function loadVirtualTerminal(response) {
-      interactiveArea.innerHTML = '';
-      interactiveArea.classList.add('floating');
+      terminalContainer.style.display = 'flex';
+      terminalContainer.innerHTML = '';
 
       const closeButton = document.createElement('button');
       closeButton.className = 'close-button';
@@ -325,13 +276,13 @@
         resetInteractiveArea();
       });
 
-      const terminalContainer = document.createElement('div');
-      terminalContainer.className = 'virtual-terminal';
+      const terminal = document.createElement('div');
+      terminal.className = 'virtual-terminal';
 
       const terminalHeader = document.createElement('div');
       terminalHeader.className = 'terminal-header';
       terminalHeader.innerHTML = `<span class="terminal-title">VIRTUAL GRID:</span><span class="cursor">_</span>`;
-      terminalContainer.appendChild(terminalHeader);
+      terminal.appendChild(terminalHeader);
 
       const terminalBody = document.createElement('div');
       terminalBody.className = 'terminal-body';
@@ -364,24 +315,16 @@
         }
       });
 
-      terminalContainer.appendChild(terminalBody);
-      terminalContainer.appendChild(terminalForm);
+      terminal.appendChild(terminalBody);
+      terminal.appendChild(terminalForm);
       
-      interactiveArea.appendChild(closeButton);
-      interactiveArea.appendChild(terminalContainer);
+      terminalContainer.appendChild(closeButton);
+      terminalContainer.appendChild(terminal);
     }
 
     function resetInteractiveArea() {
-      interactiveArea.innerHTML = `
-        <h2>Build Your Imagination Plane</h2>
-        <form id="imagination-form">
-          <label for="plane-name">Plane Name:</label>
-          <input type="text" id="plane-name" name="plane_name" placeholder="e.g., Morning Coffee" required>
-          <label for="plane-type">Plane Type:</label>
-          <input type="text" id="plane-type" name="plane_type" placeholder="e.g., Energize & Analysis" required>
-          <input type="submit" value="Create Plane">
-        </form>
-      `;
+      terminalContainer.style.display = 'none';
+      terminalContainer.innerHTML = '';
       interactiveArea.classList.remove('floating');
     }
 
