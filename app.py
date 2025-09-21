@@ -6,17 +6,14 @@ from flask_cors import CORS
 app = Flask(__name__, static_folder='static')
 CORS(app)
 
-# Serve index.html at root
 @app.route('/')
 def index():
     return send_from_directory(app.static_folder, 'index.html')
 
-# Serve other static files (CSS, JS, images)
 @app.route('/<path:path>')
 def serve_static(path):
     return send_from_directory(app.static_folder, path)
 
-# Handle form submission
 @app.route('/create_plane', methods=['POST'])
 def create_plane():
     data = request.json
@@ -26,7 +23,10 @@ def create_plane():
         "activation_message": f"{plane_name} ({plane_type}) activated!"
     })
 
-# Run the app
+@app.route('/health')
+def health():
+    return 'OK', 200
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(debug=True, host='0.0.0.0', port=port)
