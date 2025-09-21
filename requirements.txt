@@ -2,3 +2,5 @@ Flask
 qiskit
 qiskit-aer
 gunicorn
+flask_cors
+flask_cors==3.0.10
