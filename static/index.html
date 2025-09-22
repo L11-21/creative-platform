@@ -25,8 +25,8 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
         padding: 20px;
+        min-height: 100vh;
     }
 
     header {
@@ -67,21 +67,7 @@
       border-radius: 10px;
       text-align: center;
       min-height: 250px;
-      transition: box-shadow 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out, transform 0.3s ease-in-out;
       position: relative;
-    }
-    
-    .interactive-area.floating {
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
-      z-index: 1000;
-      width: 90%;
-      max-width: 900px;
-      margin: auto;
-      height: 70vh;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
     }
 
     .interactive-area h2 {
@@ -145,6 +131,18 @@
       display: flex;
       flex-direction: column;
       margin-top: 20px;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translate(-50%, 0);
+      transition: top 1s ease-out, transform 1s ease-out;
+      width: 90%;
+      max-width: 900px;
+    }
+    
+    .virtual-terminal.active {
+        top: 200px; /* Adjust this value to position it below the form */
+        transform: translate(-50%, 0);
     }
 
     @keyframes lava {
@@ -276,7 +274,7 @@
     });
 
     function loadVirtualTerminal(response) {
-      terminalContainer.style.display = 'flex';
+      terminalContainer.style.display = 'block';
       terminalContainer.innerHTML = '';
 
       const closeButton = document.createElement('button');
@@ -297,7 +295,7 @@
       const terminalBody = document.createElement('div');
       terminalBody.className = 'terminal-body';
 
-      // Initial lines
+      // Initial lines from the server
       terminalBody.innerHTML = `
         <p>${response.activation_message}</p>
         <p>${response.qiskit_simulation}</p>
@@ -315,12 +313,30 @@
       terminalInput.placeholder = 'Enter command...';
       terminalForm.appendChild(terminalInput);
 
-      terminalForm.addEventListener('submit', function(evt) {
+      terminalForm.addEventListener('submit', async function(evt) {
         evt.preventDefault();
         const command = terminalInput.value.trim();
         if (command !== '') {
-          appendTerminalLine(`> ${command}`, terminalBody);
-          simulateNeuralResponse(command, terminalBody);
+          // Send the command to a new endpoint on the server
+          try {
+              const cmdResponse = await fetch('/process_command', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({ command: command }),
+              });
+
+              if (!cmdResponse.ok) {
+                  throw new Error(`HTTP error! status: ${cmdResponse.status}`);
+              }
+              const cmdData = await cmdResponse.json();
+              appendTerminalLine(`> ${command}`, terminalBody);
+              appendTerminalLine(cmdData.response, terminalBody);
+          } catch (error) {
+              console.error('Error processing command:', error);
+              appendTerminalLine(`Error: Failed to process command.`, terminalBody);
+          }
           terminalInput.value = '';
         }
       });
@@ -330,12 +346,18 @@
       
       terminalContainer.appendChild(closeButton);
       terminalContainer.appendChild(terminal);
+      setTimeout(() => terminal.classList.add('active'), 50);
     }
 
     function resetInteractiveArea() {
-      terminalContainer.style.display = 'none';
-      terminalContainer.innerHTML = '';
-      interactiveArea.classList.remove('floating');
+      const terminal = terminalContainer.querySelector('.virtual-terminal');
+      if (terminal) {
+          terminal.classList.remove('active');
+          setTimeout(() => {
+              terminalContainer.style.display = 'none';
+              terminalContainer.innerHTML = '';
+          }, 1000); // Match transition duration
+      }
     }
 
     function appendTerminalLine(text, container) {
@@ -343,20 +365,6 @@
       line.textContent = text;
       container.appendChild(line);
       container.scrollTop = container.scrollHeight;
-    }
-
-    function simulateNeuralResponse(command, container) {
-      const responses = [
-        `Processing neural query for '${command}'...`,
-        `Quantum computation initiated for '${command}'.`,
-        `Command recognized: '${command}'. Generating creative output.`,
-        `Accessing AR asset library. Search query: '${command}'.`,
-        `Analyzing data streams. Found '${command}' trends.`
-      ];
-      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-      setTimeout(() => {
-        appendTerminalLine(randomResponse, container);
-      }, 1000);
     }
   </script>
 </body>
