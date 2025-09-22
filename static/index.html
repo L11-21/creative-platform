@@ -249,20 +249,30 @@
     const imaginationForm = document.getElementById('imagination-form');
     const terminalContainer = document.getElementById('terminal-container');
 
-    imaginationForm.addEventListener('submit', function(event) {
+    imaginationForm.addEventListener('submit', async function(event) {
       event.preventDefault();
       const planeName = document.getElementById('plane-name').value;
       const planeType = document.getElementById('plane-type').value;
 
-      const simulatedResponse = {
-        activation_message: `${planeName} (${planeType}) activated!`,
-        qiskit_simulation: "Quantum output: 101",
-        dynamic_content: "Dynamic Data: Trending topics in AI & Quantum Computing",
-        visualization: "<img src='https://i.imgur.com/qvodtvv.png' alt='Visualization'>",
-        instruction: "Enter commands to interact with the virtual grid..."
-      };
+      try {
+        const response = await fetch('/create_plane', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ plane_name: planeName, plane_type: planeType }),
+        });
 
-      loadVirtualTerminal(simulatedResponse);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        loadVirtualTerminal(data);
+      } catch (error) {
+        console.error('Error creating plane:', error);
+        alert('Failed to create plane. Check console for details.');
+      }
     });
 
     function loadVirtualTerminal(response) {
