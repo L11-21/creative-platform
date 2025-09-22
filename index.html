@@ -1,122 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Creative Platform: AR-Enabled</title>
   <style>
+    /* Global Styles */
     html, body {
-      min-height: 100%;
+      height: 100%;
       width: 100%;
       margin: 0;
       padding: 0;
       background-image: url('https://i.imgur.com/UOcHo2w.png');
       background-size: cover;
-      background-position: bottom center;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
       color: white;
+      font-family: 'Segoe UI', Arial, sans-serif;
       overflow: auto;
     }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
     header {
       text-align: center;
-      padding: 20px;
+      padding: 40px 20px 20px;
+      width: 100%;
       background-color: rgba(0, 0, 0, 0.7);
     }
+
     h1 {
       font-family: 'Century', sans-serif;
-      font-size: 2.5rem;
+      font-size: 4rem;
       background: -webkit-linear-gradient(black, #f8f8f8);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-    }
-    .presentation-container {
-      height: 30vh;
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
       margin-bottom: 20px;
-      background-color: rgba(0, 0, 0, 0.7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-    .presentation-container iframe {
-      width: 80%;
-      height: 100%;
-      border: 2px solid orange;
-    }
+
     main {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      padding: 20px;
+      flex-direction: column;
+      align-items: center;
       gap: 20px;
+      width: 100%;
+      max-width: 800px; /* Constrain main container width for better centering */
+      padding: 20px;
+      position: relative;
+      z-index: 1;
     }
-    .links-section, .interactive-area {
-      flex: 1 1 45%;
-      background-color: rgba(0, 0, 0, 0.6);
+
+    /* Interactive Area Styles */
+    .interactive-area {
+      width: 100%;
+      background-color: black;
       padding: 20px;
       border-radius: 10px;
+      text-align: center;
+      min-height: 250px;
+      transition: box-shadow 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out, transform 0.3s ease-in-out;
+      position: relative;
     }
+    
     .interactive-area.floating {
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
       z-index: 1000;
+      width: 90%;
+      max-width: 900px;
+      margin: auto;
+      height: 70vh;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
+
+    .interactive-area h2 {
+      margin-bottom: 20px;
+      font-size: 1.8rem;
+    }
+
     form {
       display: flex;
       flex-direction: column;
+      align-items: center;
       gap: 10px;
     }
-    input[type="text"], input[type="submit"] {
-      padding: 10px;
-      border: none;
+
+    input[type="text"],
+    input[type="submit"] {
+      padding: 12px;
+      border: 1px solid #ccc;
       border-radius: 5px;
-      width: 100%;
+      width: 80%;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
     }
+
     input[type="submit"] {
       background-color: orange;
       color: white;
       cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease-in-out;
     }
+
+    input[type="submit"]:hover {
+      background-color: #e69500;
+    }
+
+    footer {
+      text-align: center;
+      margin: 20px 0;
+      padding: 10px;
+      background-color: rgba(0, 0, 0, 0.5);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Virtual Terminal Styles */
     .virtual-terminal {
+      width: 100%;
       background: linear-gradient(45deg, #001100, #003300, #001100);
+      background-size: 400% 400%;
       animation: lava 10s ease infinite;
       border: 2px solid #0f0;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0, 255, 0, 0.75);
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 255, 0, 0.9);
       color: #0f0;
       font-family: 'Courier New', Courier, monospace;
       font-size: 1.1rem;
       padding: 20px;
-      position: relative;
-      overflow: auto;
-      min-height: 380px;
+      height: auto;
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      margin-top: 20px;
     }
+
     @keyframes lava {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
+
     .terminal-header {
-      position: absolute;
-      top: 10px;
-      left: 10px;
       font-size: 1.2rem;
       font-weight: bold;
       display: flex;
       align-items: center;
+      margin-bottom: 15px;
     }
+
+    .terminal-title {
+      margin-right: 5px;
+    }
+
     .cursor {
       animation: blink 1s steps(1, end) infinite;
     }
+
     @keyframes blink {
       50% { opacity: 0; }
     }
+
     .terminal-body {
-      margin-top: 40px;
-      padding: 10px;
+      flex: 1;
+      padding-right: 10px;
       text-align: left;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
+
+    .terminal-body p {
+      margin: 0;
+    }
+
     .terminal-input-form {
       margin-top: 20px;
       display: flex;
+      width: 100%;
     }
+
     .terminal-input-form input[type="text"] {
       flex: 1;
       padding: 8px;
@@ -126,36 +202,32 @@
       font-family: 'Courier New', Courier, monospace;
       font-size: 1.1rem;
     }
-    @media (max-width: 768px) {
-      main {
-        flex-direction: column;
-      }
-      .links-section, .interactive-area {
-        width: 100%;
-      }
+
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #ff0000;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 1001;
+      transition: background-color 0.3s ease;
+    }
+
+    .close-button:hover {
+      background-color: #cc0000;
     }
   </style>
 </head>
 <body>
   <header>
     <h1>Welcome to the Creative Platform</h1>
-    <div class="presentation-container">
-      <iframe src="https://1drv.ms/p/c/DA32B2039E0CF359/IQS0OcOC21FQQrcmgmK50TMOATJQi5YblECBYmki_MLxfJs?em=2&amp;wdAr=1.7777777777777777" frameborder="0"></iframe>
-    </div>
   </header>
   <main>
-    <div class="links-section">
-      <h2><a href="design.html">Design and Creative Director's Impact</a></h2>
-      <p>Explore the vital role of the Creative Director in shaping the platform's AR-focused UI and UX design.</p>
-      <h2><a href="ux-ui-developer.html">Front End Development: UX/UI Developer</a></h2>
-      <p>Learn how UX/UI Developers create intuitive interfaces and seamless user experiences for digital platforms.</p>
-      <h2><a href="information-architect.html">Usability: Information Architect</a></h2>
-      <p>Discover how Information Architects organize and structure content to enhance usability and accessibility.</p>
-      <h2><a href="motion-designer.html">Multimedia: Animator/Motion Designer</a></h2>
-      <p>Understand the role of Motion Designers in bringing static visuals to life through animation and motion graphics.</p>
-      <h2><a href="digital-project-manager.html">Project Management: Digital Project Manager</a></h2>
-      <p>Explore how Digital Project Managers lead and execute digital initiatives, ensuring timely and efficient delivery.</p>
-    </div>
     <div class="interactive-area" id="interactive-area">
       <h2>Build Your Imagination Plane</h2>
       <form id="imagination-form">
@@ -166,51 +238,66 @@
         <input type="submit" value="Create Plane">
       </form>
     </div>
+    <div id="terminal-container" style="display: none;"></div>
   </main>
   <footer>
     <p>&copy; 2025 Innovative Platform</p>
   </footer>
-  <script>
-    let commandHistory = [];
-    let historyIndex = -1;
 
-    // Imagination Plane Form Submission Handler (Live Backend)
-    document.getElementById('imagination-form').addEventListener('submit', function(event) {
+  <script>
+    const interactiveArea = document.getElementById('interactive-area');
+    const imaginationForm = document.getElementById('imagination-form');
+    const terminalContainer = document.getElementById('terminal-container');
+
+    imaginationForm.addEventListener('submit', async function(event) {
       event.preventDefault();
       const planeName = document.getElementById('plane-name').value;
       const planeType = document.getElementById('plane-type').value;
 
-      fetch('/create_plane', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          plane_name: planeName,
-          plane_type: planeType
-        })
-      })
-      .then(response => response.json())
-      .then(data => loadVirtualTerminal(data))
-      .catch(error => {
+      try {
+        const response = await fetch('/create_plane', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ plane_name: planeName, plane_type: planeType }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        loadVirtualTerminal(data);
+      } catch (error) {
         console.error('Error creating plane:', error);
-      });
+        alert('Failed to create plane. Check console for details.');
+      }
     });
 
-    // Virtual Terminal Window Loader (Live Backend for prompts)
     function loadVirtualTerminal(response) {
-      const interactiveArea = document.getElementById('interactive-area');
-      interactiveArea.innerHTML = '';
-      interactiveArea.classList.add('floating');
+      terminalContainer.style.display = 'flex';
+      terminalContainer.innerHTML = '';
 
-      const terminalContainer = document.createElement('div');
-      terminalContainer.className = 'virtual-terminal';
+      const closeButton = document.createElement('button');
+      closeButton.className = 'close-button';
+      closeButton.textContent = 'Close';
+      closeButton.addEventListener('click', () => {
+        resetInteractiveArea();
+      });
+
+      const terminal = document.createElement('div');
+      terminal.className = 'virtual-terminal';
 
       const terminalHeader = document.createElement('div');
       terminalHeader.className = 'terminal-header';
       terminalHeader.innerHTML = `<span class="terminal-title">VIRTUAL GRID:</span><span class="cursor">_</span>`;
-      terminalContainer.appendChild(terminalHeader);
+      terminal.appendChild(terminalHeader);
 
       const terminalBody = document.createElement('div');
       terminalBody.className = 'terminal-body';
+
+      // Initial lines
       terminalBody.innerHTML = `
         <p>${response.activation_message}</p>
         <p>${response.qiskit_simulation}</p>
@@ -220,128 +307,56 @@
         ${response.visualization}
       `;
 
-      const outputContainer = document.createElement('div');
-      outputContainer.id = 'terminal-output';
-      terminalBody.appendChild(outputContainer);
-
       const terminalForm = document.createElement('form');
       terminalForm.className = 'terminal-input-form';
-
       const terminalInput = document.createElement('input');
       terminalInput.type = 'text';
       terminalInput.id = 'terminal-input';
       terminalInput.placeholder = 'Enter command...';
-
       terminalForm.appendChild(terminalInput);
 
-      // Command history support (optional)
-      terminalInput.addEventListener('keydown', function(e) {
-        if (e.key === "ArrowUp") {
-          if (commandHistory.length && historyIndex > 0) {
-            historyIndex--;
-            terminalInput.value = commandHistory[historyIndex];
-            e.preventDefault();
-          }
-        } else if (e.key === "ArrowDown") {
-          if (commandHistory.length && historyIndex < commandHistory.length - 1) {
-            historyIndex++;
-            terminalInput.value = commandHistory[historyIndex];
-            e.preventDefault();
-          } else if (historyIndex === commandHistory.length - 1) {
-            terminalInput.value = '';
-            historyIndex++;
-            e.preventDefault();
-          }
-        }
-      });
-
-      // Real backend call for prompt/command input
       terminalForm.addEventListener('submit', function(evt) {
         evt.preventDefault();
         const command = terminalInput.value.trim();
         if (command !== '') {
-          appendTerminalLine(`> ${command}`);
-          // Add to history
-          commandHistory.push(command);
-          historyIndex = commandHistory.length;
-
-          fetch('/execute_command', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ command: command })
-          })
-          .then(response => response.json())
-          .then(data => {
-            if (data.output) {
-              appendTerminalLine(data.output);
-            } else {
-              appendTerminalLine('[No response from quantum engine]');
-            }
-          })
-          .catch(error => {
-            appendTerminalLine(`[Error]: ${error.message}`);
-          });
-
+          appendTerminalLine(`> ${command}`, terminalBody);
+          simulateNeuralResponse(command, terminalBody);
           terminalInput.value = '';
         }
       });
 
-      terminalBody.appendChild(terminalForm);
-      terminalContainer.appendChild(terminalBody);
-
-      // Close button
-      const closeButton = document.createElement('button');
-      closeButton.textContent = 'Close';
-      closeButton.style.position = 'absolute';
-      closeButton.style.top = '10px';
-      closeButton.style.right = '10px';
-      closeButton.addEventListener('click', () => {
-        interactiveArea.classList.remove('floating');
-        interactiveArea.innerHTML = `
-          <h2>Build Your Imagination Plane</h2>
-          <form id="imagination-form">
-            <label for="plane-name">Plane Name:</label>
-            <input type="text" id="plane-name" name="plane_name" placeholder="e.g., Morning Coffee" required>
-            <label for="plane-type">Plane Type:</label>
-            <input type="text" id="plane-type" name="plane_type" placeholder="e.g., Energize & Analysis" required>
-            <input type="submit" value="Create Plane">
-          </form>
-        `;
-        // Reset history
-        commandHistory = [];
-        historyIndex = -1;
-
-        document.getElementById('imagination-form').addEventListener('submit', function(event) {
-          event.preventDefault();
-          const planeName = document.getElementById('plane-name').value;
-          const planeType = document.getElementById('plane-type').value;
-
-          fetch('/create_plane', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              plane_name: planeName,
-              plane_type: planeType
-            })
-          })
-          .then(response => response.json())
-          .then(data => loadVirtualTerminal(data))
-          .catch(error => {
-            console.error('Error creating plane:', error);
-          });
-        });
-      });
+      terminal.appendChild(terminalBody);
+      terminal.appendChild(terminalForm);
+      
       terminalContainer.appendChild(closeButton);
-
-      interactiveArea.appendChild(terminalContainer);
+      terminalContainer.appendChild(terminal);
     }
 
-    function appendTerminalLine(text) {
-      const outputContainer = document.getElementById('terminal-output');
+    function resetInteractiveArea() {
+      terminalContainer.style.display = 'none';
+      terminalContainer.innerHTML = '';
+      interactiveArea.classList.remove('floating');
+    }
+
+    function appendTerminalLine(text, container) {
       const line = document.createElement('p');
       line.textContent = text;
-      outputContainer.appendChild(line);
-      outputContainer.scrollTop = outputContainer.scrollHeight;
+      container.appendChild(line);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function simulateNeuralResponse(command, container) {
+      const responses = [
+        `Processing neural query for '${command}'...`,
+        `Quantum computation initiated for '${command}'.`,
+        `Command recognized: '${command}'. Generating creative output.`,
+        `Accessing AR asset library. Search query: '${command}'.`,
+        `Analyzing data streams. Found '${command}' trends.`
+      ];
+      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+      setTimeout(() => {
+        appendTerminalLine(randomResponse, container);
+      }, 1000);
     }
   </script>
 </body>
