@@ -1,7 +1,9 @@
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 import psycopg2 
-from quantum_engine import run_basic_circuit # This line imports the function from the separate file
+from quantum_engine import run_basic_circuit
+import os
+from urllib.parse import urlparse
 
 app = Flask(__name__)
 CORS(app)
@@ -20,24 +22,39 @@ def create_plane():
     quantum_score = run_basic_circuit()
 
     # Placeholder for dynamic content from PostgreSQL
-    # IMPORTANT: The connection details below have been updated with your provided values.
     topic = "AI & Quantum Computing (fallback)"
+    
+    conn = None
     try:
-        conn = psycopg2.connect(
-            dbname="imagination_portal",
-            user="postgres",
-            password="$9zZ28IQ",
-            host="localhost",
-            port="5432"
-        )
+        db_url = os.environ.get("DATABASE_URL")
+        if db_url:
+            result = urlparse(db_url)
+            conn = psycopg2.connect(
+                dbname=result.path[1:],
+                user=result.username,
+                password=result.password,
+                host=result.hostname,
+                port=result.port
+            )
+        else:
+            conn = psycopg2.connect(
+                dbname="imagination_portal",
+                user="postgres",
+                password="$9zZ28IQ",
+                host="localhost",
+                port="5432"
+            )
+        
         cursor = conn.cursor()
         cursor.execute("SELECT topic FROM trending_topics LIMIT 1;")
         if cursor.rowcount > 0:
             topic = cursor.fetchone()[0]
         cursor.close()
-        conn.close()
     except Exception as e:
         print("DB connection or query error:", e)
+    finally:
+        if conn:
+            conn.close()
 
     return jsonify({
         "activation_message": f"{plane_name} ({plane_type}) activated!",
