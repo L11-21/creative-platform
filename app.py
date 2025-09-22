@@ -4,9 +4,35 @@ import psycopg2
 from quantum_engine import run_basic_circuit
 import os
 from urllib.parse import urlparse
+import logging
+
+# Configure basic logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 app = Flask(__name__)
 CORS(app)
+
+# Helper function to get a database connection
+def get_db_connection():
+    db_url = os.environ.get("DATABASE_URL")
+    if db_url:
+        result = urlparse(db_url)
+        conn = psycopg2.connect(
+            dbname=result.path[1:],
+            user=result.username,
+            password=result.password,
+            host=result.hostname,
+            port=result.port
+        )
+    else:
+        conn = psycopg2.connect(
+            dbname="imagination_portal",
+            user="postgres",
+            password="$9zZ28IQ",
+            host="localhost",
+            port="5432"
+        )
+    return conn
 
 @app.route('/')
 def index():
@@ -21,37 +47,17 @@ def create_plane():
     # Run the Qiskit simulation to get a "real" output from the quantum_engine.py file
     quantum_score = run_basic_circuit()
 
-    # Placeholder for dynamic content from PostgreSQL
     topic = "AI & Quantum Computing (fallback)"
     
     conn = None
     try:
-        db_url = os.environ.get("DATABASE_URL")
-        if db_url:
-            result = urlparse(db_url)
-            conn = psycopg2.connect(
-                dbname=result.path[1:],
-                user=result.username,
-                password=result.password,
-                host=result.hostname,
-                port=result.port
-            )
-        else:
-            conn = psycopg2.connect(
-                dbname="imagination_portal",
-                user="postgres",
-                password="$9zZ28IQ",
-                host="localhost",
-                port="5432"
-            )
-        
-        cursor = conn.cursor()
-        cursor.execute("SELECT topic FROM trending_topics LIMIT 1;")
-        if cursor.rowcount > 0:
-            topic = cursor.fetchone()[0]
-        cursor.close()
+        conn = get_db_connection()
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT topic FROM trending_topics LIMIT 1;")
+            if cursor.rowcount > 0:
+                topic = cursor.fetchone()[0]
     except Exception as e:
-        print("DB connection or query error:", e)
+        logging.error(f"DB connection or query error: {e}")
     finally:
         if conn:
             conn.close()
@@ -63,6 +69,16 @@ def create_plane():
         "visualization": "<img src='https://i.imgur.com/qvodtvv.png' alt='Visualization'>",
         "instruction": "Enter commands to interact with the virtual grid..."
     })
+
+@app.route('/status')
+def status():
+    try:
+        conn = get_db_connection()
+        conn.close()
+        return jsonify({"db_status": "connected"}), 200
+    except Exception as e:
+        logging.error(f"Status check failed: {e}")
+        return jsonify({"db_status": "error"}), 500
 
 @app.route('/health')
 def health():
