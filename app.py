@@ -25,8 +25,9 @@ def get_db_connection():
             port=result.port
         )
     else:
+        # Local fallback using the new database name
         conn = psycopg2.connect(
-            dbname="imagination_portal",
+            dbname="codex_sync_db",
             user="postgres",
             password="$9zZ28IQ",
             host="localhost",
