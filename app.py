@@ -3,7 +3,7 @@ import os
 from urllib.parse import urlparse
 
 import psycopg2
-from flask import Flask, jsonify, send_from_directory, request
+from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
 
 # Configure basic logging
@@ -37,7 +37,7 @@ def get_db_connection():
 
 @app.route('/')
 def index():
-    return send_from_directory('.', 'index.html')
+    return render_template('index.html')
 
 @app.route('/status')
 def status():
