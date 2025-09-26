@@ -3,7 +3,7 @@ import os
 from urllib.parse import urlparse
 
 import psycopg2
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
 
 # Configure basic logging
