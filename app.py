@@ -1,39 +1,23 @@
 import logging
-import os
-from urllib.parse import urlparse
-
 import psycopg2
 from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
 
-# Configure basic logging
+# Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 app = Flask(__name__)
 CORS(app)
 
-# Helper function to get a database connection
+# Direct connection to Render-hosted PostgreSQL
 def get_db_connection():
-    db_url = os.environ.get("DATABASE_URL")
-    if db_url:
-        result = urlparse(db_url)
-        conn = psycopg2.connect(
-            dbname=result.path[1:],
-            user=result.username,
-            password=result.password,
-            host=result.hostname,
-            port=result.port
-        )
-    else:
-        # Local fallback using the new database name
-        conn = psycopg2.connect(
-            dbname="codex_sync_db",
-            user="postgres",
-            password="$9zZ28IQ",
-            host="localhost",
-            port="5432"
-        )
-    return conn
+    return psycopg2.connect(
+        dbname="codex_sync_db",
+        user="codex_sync_db_user",
+        password="KfunTyRtyuVHJK0Mnoxat3h0ZOQSdYbQ",
+        host="dpg-d35onb8dl3ps739404ug-a.virginia-postgres.render.com",
+        port="5432"
+    )
 
 @app.route('/')
 def index():
