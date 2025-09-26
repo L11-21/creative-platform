@@ -1,0 +1,11 @@
+Flask
+qiskit
+qiskit-aer
+gunicorn
+flask_cors
+flask_cors==3.0.10
+Flask
+Flask-Cors
+psycopg2-binary
+qiskit
+qiskit-aer
